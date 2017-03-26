@@ -1,0 +1,59 @@
+###################
+# Install DPDK
+###################
+
+git clone http://dpdk.org/git/dpdk
+cd dpdk
+git checkout v16.11
+
+#Enable PCAP PMD
+sed -ri 's,(PMD_PCAP=).*,\1y,' config/common_base
+
+make config T=x86_64-native-linuxapp-gcc
+make -j4
+export RTE_SDK=$(pwd)
+export RTE_TARGET=build
+
+#sudo sysctl -w vm.nr_hugepages=512
+
+###################
+# Basic Fwd
+###################
+
+ll *.pcap # should see no PCAP files
+make -C examples/skeleton/
+
+sudo ./examples/skeleton/build/basicfwd -c1 -n4 --no-pci \
+--vdev=net_pcap0,rx_pcap=/vagrant/pcaps/64K_dst0.pcap,tx_pcap=b_output0.pcap \
+--vdev=net_pcap1,rx_pcap=/vagrant/pcaps/64K_dst1.pcap,tx_pcap=b_output1.pcap
+
+# Press Ctrl+C to quit after 2s
+ll *.pcap # should see 2 new PCAP files b_output0 b_output1
+
+###################
+# Intelligent Fwd
+###################
+
+git apply /vagrant/patches/skeleton_whitelist_ips.patch
+ll *.pcap
+make -C examples/skeleton/
+
+sudo ./examples/skeleton/build/basicfwd -c1 -n4 --no-pci \
+--vdev=net_pcap0,rx_pcap=/vagrant/pcaps/64K_dst0.pcap,tx_pcap=a_output0.pcap \
+--vdev=net_pcap1,rx_pcap=/vagrant/pcaps/64K_dst1.pcap,tx_pcap=a_output1.pcap
+
+# Press Ctrl+C to quit after 2s
+ll *.pcap   # should see 2 new PCAP files a_output0 a_output1 half the size
+
+###################
+# Benchmark Lib
+###################
+
+git checkout lib/librte_hash/rte_cuckoo_hash.c
+git apply /vagrant/patches/test_<>.patch
+make -j > /dev/null
+
+# Benchmark
+sudo ./build/app/test -c 0xf0 -n4 --no-pci -- -i
+# RTE> hash_autotest
+

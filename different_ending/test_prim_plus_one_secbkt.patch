@@ -1,0 +1,36 @@
+diff --git a/lib/librte_hash/rte_cuckoo_hash.c b/lib/librte_hash/rte_cuckoo_hash.c
+index 51db006..71ed62a 100644
+--- a/lib/librte_hash/rte_cuckoo_hash.c
++++ b/lib/librte_hash/rte_cuckoo_hash.c
+@@ -380,6 +380,7 @@ rte_hash_hash(const struct rte_hash *h, const void *key)
+ static inline hash_sig_t
+ rte_hash_secondary_hash(const hash_sig_t primary_hash)
+ {
++	return primary_hash + 1;
+ 	static const unsigned all_bits_shift = 12;
+ 	static const unsigned alt_bits_xor = 0x5bd1e995;
+ 
+@@ -637,6 +638,23 @@ __rte_hash_add_key_with_hash(const struct rte_hash *h, const void *key,
+ 			return new_idx - 1;
+ 		}
+ 
++		for (i = 0; i < RTE_HASH_BUCKET_ENTRIES; i++) {
++		/* Check if slot is available in key's secondary bucket */
++			if (likely(sec_bkt->key_idx[i] == EMPTY_SLOT)) {
++				sec_bkt->sig_current[i] = sig;
++				sec_bkt->sig_alt[i] = alt_hash;
++				sec_bkt->key_idx[i] = new_idx;
++				break;
++			}
++		}
++
++		if (i != RTE_HASH_BUCKET_ENTRIES) {
++			if (h->add_key == ADD_KEY_MULTIWRITER)
++				rte_spinlock_unlock(h->multiwriter_lock);
++				return new_idx - 1;
++		} else
++			return -ENOSPC;
++
+ 		/* Primary bucket full, need to make space for new entry
+ 		 * After recursive function.
+ 		 * Insert the new entry in the position of the pushed entry

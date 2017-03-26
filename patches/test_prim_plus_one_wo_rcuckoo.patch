@@ -1,0 +1,20 @@
+diff --git a/lib/librte_hash/rte_cuckoo_hash.c b/lib/librte_hash/rte_cuckoo_hash.c
+index 51db006..09ac0b4 100644
+--- a/lib/librte_hash/rte_cuckoo_hash.c
++++ b/lib/librte_hash/rte_cuckoo_hash.c
+@@ -380,6 +380,7 @@ rte_hash_hash(const struct rte_hash *h, const void *key)
+ static inline hash_sig_t
+ rte_hash_secondary_hash(const hash_sig_t primary_hash)
+ {
++	return primary_hash + 1;
+ 	static const unsigned all_bits_shift = 12;
+ 	static const unsigned alt_bits_xor = 0x5bd1e995;
+ 
+@@ -449,6 +450,7 @@ make_space_bucket(const struct rte_hash *h, struct rte_hash_bucket *bkt)
+ 		next_bkt[i]->key_idx[j] = bkt->key_idx[i];
+ 		return i;
+ 	}
++	return -ENOSPC;
+ 
+ 	/* Pick entry that has not been pushed yet */
+ 	for (i = 0; i < RTE_HASH_BUCKET_ENTRIES; i++)

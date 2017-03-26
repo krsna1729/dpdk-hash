@@ -1,0 +1,12 @@
+diff --git a/lib/librte_hash/rte_cuckoo_hash.c b/lib/librte_hash/rte_cuckoo_hash.c
+index 51db006..3ee9730 100644
+--- a/lib/librte_hash/rte_cuckoo_hash.c
++++ b/lib/librte_hash/rte_cuckoo_hash.c
+@@ -419,6 +419,7 @@ rte_hash_reset(struct rte_hash *h)
+ static inline int
+ make_space_bucket(const struct rte_hash *h, struct rte_hash_bucket *bkt)
+ {
++	return -ENOSPC;
+ 	static unsigned int nr_pushes;
+ 	unsigned i, j;
+ 	int ret;
