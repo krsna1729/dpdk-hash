@@ -66,10 +66,20 @@ hash_autotest
 Appendix
 ========
 
-Part of the vagrant provisioning script
+Snapshot of SW versions
+-----------------------
 
-Install DPDK
-------------
+```none
+vagrant: 1.9.3
+vagrant-proxyconf (1.5.2)
+VBox: 5.14
+Host: Win8.1
+```
+
+Build DPDK env
+--------------
+
+Part of the vagrant provisioning script
 
 ```shell
 git clone http://dpdk.org/git/dpdk
