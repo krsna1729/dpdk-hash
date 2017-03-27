@@ -1,9 +1,13 @@
 Environment
 ===========
 
-Make sure `Vagrant` is setup for the platform of you choice. If you are behind a proxy, install `vagrant-proxyconf` plugin.
+Make sure `Vagrant` is setup for the platform of your choice. If you are behind a proxy, install `vagrant-proxyconf` plugin and export the http(s) proxy, no_proxy variables. The Vagrantfile will pick it up and provision the Ubuntu box accordingly.
 
 ```shell
+git clone https://github.com/krsna1729/dpdk-hash.git
+# Alternately, download and extract zip https://github.com/krsna1729/dpdk-hash/archive/master.zip
+cd dpdk-hash
+
 vagrant up
 vagrant ssh
 cd dpdk
