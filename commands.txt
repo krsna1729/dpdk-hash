@@ -23,7 +23,7 @@ export RTE_TARGET=build
 ll *.pcap # should see no PCAP files
 make -C examples/skeleton/
 
-sudo ./examples/skeleton/build/basicfwd -c1 -n4 --no-pci \
+sudo ./examples/skeleton/build/basicfwd -c1 --no-pci \
 --vdev=net_pcap0,rx_pcap=/vagrant/pcaps/64K_dst0.pcap,tx_pcap=b_output0.pcap \
 --vdev=net_pcap1,rx_pcap=/vagrant/pcaps/64K_dst1.pcap,tx_pcap=b_output1.pcap
 
@@ -38,7 +38,7 @@ git apply /vagrant/patches/skeleton_whitelist_ips.patch
 ll *.pcap
 make -C examples/skeleton/
 
-sudo ./examples/skeleton/build/basicfwd -c1 -n4 --no-pci \
+sudo ./examples/skeleton/build/basicfwd -c1 --no-pci \
 --vdev=net_pcap0,rx_pcap=/vagrant/pcaps/64K_dst0.pcap,tx_pcap=a_output0.pcap \
 --vdev=net_pcap1,rx_pcap=/vagrant/pcaps/64K_dst1.pcap,tx_pcap=a_output1.pcap
 
@@ -54,6 +54,6 @@ git apply /vagrant/patches/test_<>.patch
 make -j > /dev/null
 
 # Benchmark
-sudo ./build/app/test -c 0xf0 -n4 --no-pci -- -i
+sudo ./build/app/test --lcores='(0-3)@(0)' --no-pci -- -i
 # RTE> hash_autotest
 
