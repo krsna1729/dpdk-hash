@@ -1,5 +1,11 @@
 #!/bin/sh
 
+wget -q --spider http://google.com
+if [ $? -ne 0 ]; then
+    echo "ERROR: You seem to be offline or behind a proxy"
+    exit 1
+fi
+
 sudo apt-get update && sudo apt-get -y install \
 	build-essential git libpcap-dev \
         linux-image-extra-$(uname -r) linux-headers-$(uname -r)
