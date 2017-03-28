@@ -19,7 +19,8 @@ Basic Fwd
 Simple RX TX app. TX pcaps will be of the same size as RX. All are transmitted.
 
 ```shell
-ll *.pcap # should see no PCAP files
+ll -h /vagrant/pcaps/*.pcap # should see 2 PCAP
+ll -h *.pcap                # should see no PCAP files
 make -C examples/skeleton/
 
 sudo ./examples/skeleton/build/basicfwd --no-pci \
@@ -27,7 +28,7 @@ sudo ./examples/skeleton/build/basicfwd --no-pci \
 --vdev=net_pcap1,rx_pcap=/vagrant/pcaps/64K_dst1.pcap,tx_pcap=b_output1.pcap
 
 # Press Ctrl+C to quit after 2s
-ll *.pcap # should see 2 new PCAP files b_output0 b_output1
+ll -h *.pcap                # should see 2 new PCAP files b_output0 b_output1
 ```
 
 Whitelist Fwd
@@ -37,7 +38,6 @@ Here we whitelist half the IPs (even) in the app. The TX pcaps must be half the 
 
 ```shell
 git apply /vagrant/patches/skeleton_whitelist_ips.patch
-ll *.pcap
 make -C examples/skeleton/
 
 sudo ./examples/skeleton/build/basicfwd --no-pci \
@@ -45,7 +45,7 @@ sudo ./examples/skeleton/build/basicfwd --no-pci \
 --vdev=net_pcap1,rx_pcap=/vagrant/pcaps/64K_dst1.pcap,tx_pcap=a_output1.pcap
 
 # Press Ctrl+C to quit after 2s
-ll *.pcap   # should see 2 new PCAP files a_output0 a_output1 half the size
+ll -h *.pcap                # 2 new PCAP files a_output0 a_output1 half the size
 ```
 
 Benchmark Lib
