@@ -8,7 +8,7 @@ fi
 
 sudo apt-get update && sudo apt-get -y install \
 	build-essential git libpcap-dev \
-        linux-image-extra-$(uname -r) linux-headers-$(uname -r)
+        linux-headers-$(uname -r)
 
 echo "export RTE_SDK=$HOME/dpdk" | tee -a $HOME/.profile
 echo "export RTE_TARGET=build" | tee -a $HOME/.profile
