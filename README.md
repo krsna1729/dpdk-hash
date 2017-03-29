@@ -1,7 +1,7 @@
 Environment
 ===========
 
-Make sure `Vagrant` and `Virtulbox` is setup for the platform of your choice. If you are behind a proxy, install `vagrant-proxyconf` plugin and export the http(s) proxy, no_proxy variables. The `Vagrantfile` will pick it up and provision the Ubuntu box accordingly.
+Make sure `Vagrant` and `Virtualbox` is setup for the platform of your choice. If you are behind a proxy, install `vagrant-proxyconf` plugin and export the http(s) proxy, no_proxy variables. The `Vagrantfile` will pick it up and provision the Ubuntu box accordingly.
 
 ```shell
 git clone https://github.com/krsna1729/dpdk-hash.git
@@ -12,6 +12,8 @@ vagrant up
 vagrant ssh
 cd dpdk
 ```
+
+If you want to experiment without having to use Vagrant, you can run setup-apt.sh on 16.04 Ubuntu box to get all the packages installed, hugepages setup and DPDK compiled correctly. Make sure you provide appropriate file paths to patches and pcaps when running the below commands. All below commands will be run from the dpdk directory.
 
 Basic Fwd
 ==========
@@ -74,25 +76,4 @@ vagrant: 1.9.3
 vagrant-proxyconf (1.5.2)
 VitualBox: 5.1.14
 Host: Win8.1
-```
-
-Build DPDK env
---------------
-
-Part of the vagrant provisioning script
-
-```shell
-git clone http://dpdk.org/git/dpdk
-cd dpdk
-git checkout v16.11
-
-#Enable PCAP PMD
-sed -ri 's,(PMD_PCAP=).*,\1y,' config/common_base
-
-make config T=x86_64-native-linuxapp-gcc
-make -j4
-export RTE_SDK=$(pwd)
-export RTE_TARGET=build
-
-sudo sysctl -w vm.nr_hugepages=256
 ```
