@@ -10,10 +10,9 @@ cd dpdk-hash
 
 vagrant up
 vagrant ssh
-cd dpdk
 ```
 
-If you want to experiment without having to use Vagrant, you can run setup-apt.sh on 16.04 Ubuntu box to get all the packages installed, hugepages setup and DPDK compiled correctly. Make sure you provide appropriate file paths to patches and pcaps when running the below commands. All below commands will be run from the dpdk directory.
+Use the `setup-apt.sh` as a guide to setup the env on your own Ubuntu box if you want to try without `Vagrant`.
 
 Basic Fwd
 ==========
@@ -21,6 +20,8 @@ Basic Fwd
 Simple RX TX app. TX pcaps will be of the same size as RX. All are transmitted.
 
 ```shell
+cd dpdk
+
 ll -h /vagrant/pcaps/*.pcap # should see 2 PCAP
 ll -h *.pcap                # should see no PCAP files
 make -C examples/skeleton/
