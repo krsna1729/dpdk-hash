@@ -9,7 +9,7 @@ git clone https://github.com/krsna1729/dpdk-hash.git
 cd dpdk-hash
 
 vagrant up
-vagrant ssh
+vagrant ssh                 # or PuTTY login vagrant/vagrant 127.0.0.1:2222
 ```
 
 Use the `setup-apt.sh` as a guide to setup the env on your own Ubuntu box if you want to try without `Vagrant`.
