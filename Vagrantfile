@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
  end
 
  config.vm.define :test do |test|
-   test.vm.box = "ubuntu/xenial64"
+   test.vm.box = "bento/ubuntu-16.04"
    test.vm.provision "shell", path: "setup-apt.sh", privileged: false 
  end
 end
